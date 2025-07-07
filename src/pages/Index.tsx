@@ -1,12 +1,34 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import LoginForm from '../components/LoginForm';
+import TeacherDashboard from '../components/TeacherDashboard';
+import AdminDashboard from '../components/AdminDashboard';
 
 const Index = () => {
+  const [user, setUser] = useState(null);
+  const [userType, setUserType] = useState(null);
+
+  const handleLogin = (userData, type) => {
+    setUser(userData);
+    setUserType(type);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setUserType(null);
+  };
+
+  if (!user) {
+    return <LoginForm onLogin={handleLogin} />;
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      {userType === 'teacher' ? (
+        <TeacherDashboard user={user} onLogout={handleLogout} />
+      ) : (
+        <AdminDashboard user={user} onLogout={handleLogout} />
+      )}
     </div>
   );
 };
